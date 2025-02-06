@@ -1,0 +1,24 @@
+import mongoose from 'mongoose'
+
+const producrShema = new mongoose.Schema(
+    {
+        title: {
+            type: String,
+            required: true,
+        },
+        prise: {
+            type: Number,
+            required: true,
+        },
+        about: {
+            type: String,
+            required: true,
+        },
+        productImage: {
+            type: String,
+            required: true
+        }
+        
+    }, { timestamps: true })
+
+export const Product = mongoose.model("Product", producrShema)

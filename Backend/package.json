@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "cloudinary": "^2.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "name": "express",
+  "version": "1.0.0",
+  "description": "basic express servrer",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node -r dotenv/config --experimental-json-modules index.js",
+    "start": "node -r dotenv/config --experimental-json-modules index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chai",
+    "js",
+    "nodejs",
+    "expressjs"
+  ],
+  "author": "hardip",
+  "license": "ISC"
+}
