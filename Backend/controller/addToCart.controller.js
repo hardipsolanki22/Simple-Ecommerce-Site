@@ -7,6 +7,17 @@ const addItem = async (req, res) => {
         const { productId } = req.params
         const { quntity } = req.body
 
+        const isProductExist = await AddToCart.findOne({product :productId})
+
+        if (isProductExist) {
+            return res.status(409)
+            .json({
+                success: false,
+                data: null,
+                message: "Product Exist in Cart"
+            })
+        }
+
         if (!productId) {
             return res.status(400)
                 .json({
@@ -77,9 +88,9 @@ const getAllItems = async(req, res) => {
 
 const removeItem = async (req, res) => {
   try {
-      const { productId } = req.params
+      const { itemId } = req.params
   
-      if (!productId) {
+      if (!itemId) {
           return res.status(400)
               .json({
                   success: false,
@@ -88,10 +99,7 @@ const removeItem = async (req, res) => {
               })
       }
   
-      const removedItem = await AddToCart.findOneAndDelete(
-          {product: productId},
-          {new: true}
-      )
+      const removedItem = await AddToCart.findByIdAndDelete(itemId)
   
       if (!removedItem) {
           return res.status(404)
@@ -113,8 +121,59 @@ const removeItem = async (req, res) => {
   }
 }
 
+const updateItemInCart = async(req, res) => {
+    const {itemId} = req.params
+    const {quntity} = req.body
+
+    if (!quntity) {
+        return res.status(400)
+        .json({
+            success: false,
+            data: null,
+            message: "Product quetity required"
+        })
+    }
+
+
+    if (!itemId) {
+        return res.status(400)
+        .json({
+            success: false,
+            data: null,
+            message: "Item id required"
+        })
+    }
+
+    const updatedItem = await AddToCart.findByIdAndUpdate(itemId,
+        {
+            $set: {
+                quntity
+            }
+        },
+        {new: true}
+    )
+
+    if (!updatedItem) {
+        return res.status(404)
+        .json({
+            success: false,
+            data: null,
+            message: "Item not found"
+        })
+    }
+
+     res.status(200)
+    .json({
+        success: true,
+        data: updatedItem,
+        message: "Item Update Successfully"
+    })
+
+}
+
 export { addItem,
     getAllItems,
-    removeItem
+    removeItem,
+    updateItemInCart
 
  }

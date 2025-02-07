@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const producrShema = new mongoose.Schema(
     {
-        title: {
+        name: {
             type: String,
             required: true,
         },
