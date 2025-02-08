@@ -1,46 +1,55 @@
-import React, { useId, useState } from 'react'
+import React, { use, useEffect, useId, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProductAsync } from '../../features/products/ProductSlice'
+import {useNavigate} from 'react-router-dom'
+import { addProductAsync } from '../../features/products/productSlice'
 
 function ProductForm() {
 
   const id = useId()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     about: "",
-    prise: "",
-    productImage: ""
+    price: "",
+    productImage: null
     
   })
   const isLoading = useSelector(state => state.product.status)
-
   console.log("isLoading: ", isLoading);
   
 
-  const handleChnage = (e) => {
+  const handleChanage = (e) => {
     const {name, value, files} = e.target    
-    if (name === "productImage") {      
+    const file = files && files[0]
+
+    if (file) {
       setFormData({
         ...formData,
-        [name]: files[0]
+        [name]: file
       })
     } else {
       setFormData({
         ...formData,
-        [name]: value
+        [name]: value,
       })
     }
 
-  }
 
-  console.log(formData);
+  }
   
 
   const submitHandler = (e) => {
    try {     
      e.preventDefault()
-     dispatch(addProductAsync(formData))
+     const data = new FormData()
+      for(const key in formData) {
+        data.append(key, formData[key])
+      }
+     dispatch(addProductAsync(data))      
+     if (isLoading === "idle") {
+      navigate("/products")
+    }
    } catch (error) {
     console.log(error);
    }
@@ -64,7 +73,7 @@ function ProductForm() {
               name='name'
               id={id}
               value={formData.name}
-              onChange={handleChnage}
+              onChange={handleChanage}
               placeholder='Enter Product Name'
               className='w-full border outline-none focus:border-sky-500 p-2 transition ease-in duration-150'
               required
@@ -80,7 +89,7 @@ function ProductForm() {
               name='about'
               id={"d"+ id}
               value={formData.about}
-              onChange={handleChnage}
+              onChange={handleChanage}
               placeholder='Enter Product Description'
               className='w-full border outline-none focus:border-sky-500 px-2 transition ease-in duration-150'
               required
@@ -92,10 +101,10 @@ function ProductForm() {
             </label>
             <input
               type="text"
-              name='prise'
+              name='price'
               id={"p" + id}
-              value={formData.prise}
-              onChange={handleChnage}
+              value={formData.price}
+              onChange={handleChanage}
               placeholder='Enter Product Prise'
               className='w-full border outline-none focus:border-sky-500 p-2 transition ease-in duration-150'
               required
@@ -110,12 +119,13 @@ function ProductForm() {
               name='productImage'
               className='border p-2 w-full'
               required
-              onChange={handleChnage}
+              onChange={handleChanage}
             />
           </div>
           <button  type='submit'
+          disabled={isLoading === "loading"}
           className='bg-slate-800 text-white '>
-            Submit
+           { isLoading === "loading" ? "Loading" : "Submit"}
           </button>
         </form>
       </div>

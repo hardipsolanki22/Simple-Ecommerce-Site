@@ -5,10 +5,7 @@ import {useNavigate} from 'react-router-dom'
 function Header() {
 
     const navigate = useNavigate()
-    const [isOpen, setIsOpen] = useState(false)
-
-    console.log(isOpen);
-    
+    const [isOpen, setIsOpen] = useState(false)    
 
     const navItems = [
         {

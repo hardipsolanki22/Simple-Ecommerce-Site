@@ -1,26 +1,44 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import { addProduct, fetchProducts } from './productAPI'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { axiosInstance } from '../../helpers/axiosService'
+
+const initialState = {
+    products: [],
+    status: "idle"
+}
 
 export const fetchProductsAsync = createAsyncThunk(
     'products/fetchProducts',
     async () => {
-        const response = fetchProducts();
-        return response.data
+        try {
+            const response = await axiosInstance.get("/products/")
+            console.log("data: ", JSON.stringify(response.data.data));
+            
+            return response.data.data
+
+        } catch (error) {
+            console.log("message: ", error.response.data.message);
+            console.log("error: ", error.message);
+
+
+        }
     }
 )
 
 export const addProductAsync = createAsyncThunk(
     "products/addProduct",
     async (formData) => {
-        const response = addProduct(formData);
-        return response.data
+        try {
+            const response = await axiosInstance.post("/products/", formData)
+            return response.data.data
+        } catch (error) {
+            console.log("message: ", error.response.data.message);
+            console.log("error: ", error.message);
+
+
+
+        }
     }
 )
-
-const initialState = {
-    products: [],
-    status: "init"
-}
 
 const productSlice = createSlice({
     name: "product",
@@ -34,22 +52,19 @@ const productSlice = createSlice({
         })
         builder.addCase(fetchProductsAsync.fulfilled, (state, action) => {
             state.status = "idle",
-            products = action.payload
-            
-        })
-        builder.addCase(addProductAsync.fulfilled, (state, action) => {
-            state.products.push(action.payload)
+            state.products = action.payload
+
         })
         builder.addCase(addProductAsync.pending, (state, action) => {
             state.status = "loading"
         })
-        builder.addCase(addProductAsync.rejected, (state, action) => {
+        builder.addCase(addProductAsync.fulfilled, (state, action) => {
+            state.products.push(action.payload)
             state.status = "idle"
-            state.erro = action.error.message
         })
     }
 })
 
-export const {} = productSlice.actions
+export const { } = productSlice.actions
 
 export default productSlice.reducer

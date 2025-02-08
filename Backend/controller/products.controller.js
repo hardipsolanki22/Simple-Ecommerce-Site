@@ -3,9 +3,9 @@ import { destroyCloudinary, uploadCloudnary } from '../utils/claoudnary.js'
 
 const createProduct = async (req, res) => {
     try {
-        const { name, about, prise } = req.body        
+        const { name, about, price } = req.body
 
-        if ([name, about, prise].some((field) => field?.trim() === "")) {
+        if ([name, about, price].some((field) => field?.trim() === "")) {
             return res.status(400).json({
                 sucess: false,
                 data: null,
@@ -13,7 +13,7 @@ const createProduct = async (req, res) => {
             })
         }
 
-        const productImgLocalPath = req.file?.path        
+        const productImgLocalPath = req.file?.path
 
         if (!productImgLocalPath) {
             return res.status(400).json({
@@ -26,7 +26,7 @@ const createProduct = async (req, res) => {
 
         const product = new Product({
             name,
-            prise,
+            price,
             about,
             productImage
         })
@@ -94,7 +94,7 @@ const getProduct = async (req, res) => {
 const updateProductField = async (req, res) => {
     try {
         const { productId } = req.params
-        const { name, about, prise } = req.body
+        const { name, about, price } = req.body
 
         if (!productId) {
             return res.status(400)
@@ -110,7 +110,7 @@ const updateProductField = async (req, res) => {
                 $set: {
                     name,
                     about,
-                    prise
+                    price
                 },
             },
             {
