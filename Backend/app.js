@@ -8,9 +8,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true , limit: "16K"}))
 app.use(express.static('public'))
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: process.env.NODE_ENV === 'production' ? process.env.REQUEST_URL
+             : 'http://localhost:5173',
 }))
 
+app.get('/', (req, res) => res.send('Welcome to the E-commerce API'))
 
 // rountes import
 import productsRouter from './routes/products.routes.js'
