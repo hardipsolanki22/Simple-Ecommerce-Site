@@ -76,7 +76,7 @@ const addItem = async (req, res) => {
 }
 
 const getAllItems = async(req, res) => {
-    const items = await AddToCart.find().populate("product", "title prise productImage")
+    const items = await AddToCart.find().populate("product", "name price productImage")
 
     return res.status(200)
         .json({
@@ -151,7 +151,8 @@ const updateItemInCart = async(req, res) => {
             }
         },
         {new: true}
-    )
+    ).populate("product", "name price productImage")
+
 
     if (!updatedItem) {
         return res.status(404)
