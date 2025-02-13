@@ -1,5 +1,5 @@
 import { Product } from '../models/products.models.js'
-import { destroyCloudinary, uploadCloudnary } from '../utils/claoudnary.js'
+import { destroyCloudinary, uploadCloudnary } from '../utils/Claoudnary.js'
 
 const createProduct = async (req, res) => {
     try {
