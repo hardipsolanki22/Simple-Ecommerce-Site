@@ -1,7 +1,7 @@
 import React, { use, useEffect, useId, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {useNavigate} from 'react-router-dom'
-import { addProductAsync } from '../../features/products/productSlice'
+import { addProductAsync } from '../../features/products/ProductSlice'
 
 function ProductForm() {
 

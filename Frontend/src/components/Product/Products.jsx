@@ -1,6 +1,6 @@
 import React, { useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProductsAsync } from '../../features/products/productSlice'
+import { fetchProductsAsync } from '../../features/products/ProductSlice'
 import { addToCartAsync } from '../../features/cart/cartSlice'
 
 function Products({ product }) {
